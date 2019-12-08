@@ -5,6 +5,5 @@ package org.jalasoft;
  */
 public enum AccountOrigin {
     LOCAL,
-    RURAl,
     FOREIGN   
 }

@@ -57,15 +57,21 @@ public class Bank {
      * interest rate
      */
     public void payInterest() {
+        
         for(BankAccount bankAccount : accounts.values()) {
-            int interestToPay = (int) (bankAccount.getBalance() * interestRate);
+            int interestToPay = (int) (bankAccount.getBalance() * bankAccount.getInterest());
             if (interestToPay > 0) {
                 bankAccount.deposit(interestToPay);
             }
         }
     }
+    
+    public boolean existAccounts() {
+        return !accounts.isEmpty();
+    }
 
     /**
+     * TODO: Revisar si aun se necesita este metodo
      * @return the interestRate which will help to calculate the interest to pay
      */
     public double getInterestRate() {
@@ -86,4 +92,12 @@ public class Bank {
 
         return builder.toString();
     }  
+
+    public void addInterestToAccount(int accountNumber, double interest) {
+        for (BankAccount account : accounts.values()) {
+            if (account.getAccountNumber() == accountNumber) {
+                account.addInterest(interest);
+            }
+        }
+    }
 }
