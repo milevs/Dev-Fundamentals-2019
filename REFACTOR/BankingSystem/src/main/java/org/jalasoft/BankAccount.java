@@ -8,6 +8,7 @@ public class BankAccount {
     private int accountNumber;
     private AccountOrigin accountOrigin;
     private int balance;
+    private double interest;
 
     /**
      * Create a new account with 0 balance
@@ -19,8 +20,17 @@ public class BankAccount {
         this.accountNumber = accountNumber;
         this.accountOrigin = accountOrigin;
         this.balance = 0;
+        this.interest = 0;
     }
 
+    public void addInterest(double nuevoInteres) {
+        interest = nuevoInteres;
+    }
+    
+    public double getInterest() {
+        return interest;
+    }
+    
     /**
      * @return the unique identifier of the account
      */

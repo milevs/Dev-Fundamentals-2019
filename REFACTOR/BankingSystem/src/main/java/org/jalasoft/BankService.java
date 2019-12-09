@@ -48,7 +48,6 @@ public class BankService {
         // 2.- if the accountOrigin does not exist we will throw an exception
         AccountOrigin accountOriginCalculated = AccountOrigin.valueOf(accountOrigin);
 
-        
         return bank.newAccount(accountOriginCalculated);
     }
 
@@ -88,6 +87,10 @@ public class BankService {
     public void payInterest() { 
         bank.payInterest();
     }
+    
+    public void addInterestToAccount(int accountNumber, double interest) {
+        bank.addInterestToAccount(accountNumber, interest);
+    }
 
     /**
      * 
@@ -95,5 +98,9 @@ public class BankService {
      */
     public String getBankInformation() {
         return bank.toString();
+    }
+    
+    public boolean existsAccounts() {
+        return bank.existAccounts();
     }
 }
