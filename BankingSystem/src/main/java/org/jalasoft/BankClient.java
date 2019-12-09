@@ -24,8 +24,10 @@ public class BankClient {
     public void run() {
         bankServices = new BankService();
         scanner = new Scanner(System.in);
+        
         while (!done) {
-            System.out.print("Enter command (0=quit, 1=new, 2=select, 3=deposit, 4=loan, 5=show, 6=interest): ");
+            String menu = createMenu();
+            System.out.print(menu);
             int commandNumber = scanner.nextInt();
             
             try {
@@ -36,12 +38,26 @@ public class BankClient {
         }
         scanner.close();
     }
+    
+    private String createMenu() {
+        if (!bankServices.existsAccounts()) {
+            return "Enter command (0=quit, 1=new): ";
+        }
+        
+        return "Enter command (0=quit, 1=new, 2=select, 3=deposit, 4=loan, 5=show, 6=interest): ";
+    }
 
     /**
      * Decides what command will be executed based on the command number
      * @param commandNumber the command that will be executed
      */
     private void processCommand(int commandNumber) {
+        
+        if (commandNumber > 1 && !bankServices.existsAccounts()) {
+            System.out.println("Esta operacion requiere de una cuenta bancaria.");
+            return;
+        }
+        
         if (commandNumber == 0)
             quit();
         else if (commandNumber == 1)
@@ -55,7 +71,7 @@ public class BankClient {
         else if (commandNumber == 5)
             showAll();
         else if (commandNumber == 6)
-            addInterest();
+            payInterest();
         else
             System.out.println("Illegal command");
     }
@@ -66,13 +82,18 @@ public class BankClient {
     }
 
     private void newAccount() {
-        System.out.println("Specify the origin of the account (Local, Rural, Foreign): ");
+        System.out.println("Specify the origin of the account (Local, Foreign): ");
         String accountOriginAsString = scanner.next();        
         currentAccount = bankServices.newAccount(accountOriginAsString);
+        System.out.println("Especifique el interes de la cuenta: ");
+        Double interest = scanner.nextDouble();  
+        bankServices.addInterestToAccount(currentAccount, interest);
+        
         System.out.println("Your new account number is: " + currentAccount);
     }
 
     private void select() {
+        
         System.out.print("Enter account#: ");
         currentAccount = scanner.nextInt();
         int balance = bankServices.getBalance(currentAccount); //delegates the work to the appropriate class
@@ -80,6 +101,7 @@ public class BankClient {
     }
 
     private void deposit() {
+                
         System.out.print("Enter deposit amount: ");
         int amount = scanner.nextInt();
         bankServices.deposit(currentAccount, amount); //delegates the work to the appropriate class
@@ -100,7 +122,7 @@ public class BankClient {
         System.out.println(bankServices.getBankInformation());
     }
 
-    private void addInterest() {
+    private void payInterest() {       
         bankServices.payInterest();
     }
 }
